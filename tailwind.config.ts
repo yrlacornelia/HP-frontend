@@ -9,15 +9,23 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'hpbg': "url('/images/hpbackground.avif')",
       },
-      fontFamily: {
-        play: ["Play", "sans-serif"],
+      colors: {
+        yellow: {
+          light: '#E6D4A2'
+        },
+        gray: {
+          dark: '#1E1E1E'
+        }
       },
     },
   },
   plugins: [],
 };
 export default config;
+
+
+// fontFamily: {
+//   play: ["Play", "sans-serif"],
+// },

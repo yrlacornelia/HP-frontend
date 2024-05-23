@@ -9,6 +9,7 @@ export const anybody = Anybody({
   export const arapey = Arapey({
     weight: ['400'],
     style: ['normal', 'italic'],
+  
     subsets: ['latin'],
     display: 'swap',
   })
