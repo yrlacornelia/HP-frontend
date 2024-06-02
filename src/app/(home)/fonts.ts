@@ -1,7 +1,7 @@
 
 import {Anybody, Arapey} from "next/font/google";
 export const anybody = Anybody({
-    weight: ['400', '700'],
+    weight: ['200','400', '700'],
     style: ['normal', 'italic'],
     subsets: ['latin'],
     display: 'swap',
