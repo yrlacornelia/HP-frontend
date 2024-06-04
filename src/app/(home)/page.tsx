@@ -5,11 +5,12 @@ import Image from "next/image";
 import TextCard from "@/components/cards/textCard";
 import OwlPost from "@/components/form/owlpost";
 import styles from './home.module.css'
+import UsersList from "@/components/testfetch";
 
 const Home = () => {
   return (
     <>
-
+<UsersList />
       <div className="flex gap-20 mt-40 justify-center items-center">
         <div className=" w-96 h-96 flex overflow-hidden items-center justify-center">
           <Image className="h-full w-full" width={200} height={200} src={'/images/homefeed/letter.jpg'} alt="letter" />
