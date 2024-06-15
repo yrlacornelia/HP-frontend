@@ -5,15 +5,30 @@ function UsersList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/users/allusers')  
-      .then(response => {
+    const fetchUsers = async () => {
+      const token = localStorage.getItem('token');
+console.log(token)
+      // Fetch all users
+      try {
+        const response = await fetch('http://localhost:8080/users/allusers', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json();
-      })
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error fetching users:', error));
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
   }, []);
   console.log(users)
   return (
@@ -21,7 +36,7 @@ function UsersList() {
       <h2>Users</h2>
       <ul>
         {users.map(user => (
-         <p>helo</p> 
+         <p>user</p> 
         ))}
       </ul>
     </div>
