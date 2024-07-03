@@ -6,6 +6,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
+    alert("hi")
     console.log(username)
     console.log(password)
     try {
@@ -33,21 +34,24 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
+
+<>
+<form className="flex flex-col mt-12 w-72 ">
+ 
+  <label className="mb-1" htmlFor="Username">Name</label>
+  <input className="mb-3 rounded " type="text" id="Username"      placeholder="Username"
+        value={username}      onChange={(e) => setUsername(e.target.value)}/>
+  
+  <label className="mb-1" htmlFor="password">Email</label>
+  <input className="mb-3 rounded" type="password" id="password" name="password" 
         placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
-    </div>
+        value={password}  onChange={(e) => setPassword(e.target.value)}/>
+  
+  <button className="mt-4" onClick={handleLogin} type="submit">Login</button>
+  
+
+</form>
+</>
   );
 };
 

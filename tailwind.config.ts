@@ -1,11 +1,13 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  
   theme: {
     extend: {
       backgroundImage: {
@@ -23,7 +25,7 @@ const config: Config = {
         },
         ravenclaw: {
           blue: '#0E1A40',
-          bronze: '#946B2D', // Alternatively, use silver: '#5D5D5D' for movie colors
+          bronze: '#946B2D', 
         },
         slytherin: {
           green: '#2A623D',
@@ -58,8 +60,3 @@ const config: Config = {
   plugins: [],
 };
 export default config;
-
-
-// fontFamily: {
-//   play: ["Play", "sans-serif"],
-// },
