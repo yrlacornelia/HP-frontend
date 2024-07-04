@@ -43,6 +43,32 @@ const Profile = () => {
 
     fetchUsers();
   }, []);
+
+
+
+  const changeProfile = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:8080/userSettings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ username })
+      });
+
+      if (!response.ok) {
+        throw new Error('Profile update failed');
+      }
+
+      const data = await response.json();
+      setUser(data);
+      setUsername(data.username);
+    } catch (error) {
+      console.error('Profile update failed:', error);
+    }
+  };
   console.log(user)
   const onImageChange = (event:any) => {
     if (event.target.files && event.target.files[0]) {
@@ -80,7 +106,7 @@ const Profile = () => {
     }
 };
 
-
+console.log(username)
   
   if (!user) {
     return <div className="flex flex-col items-center mt-20">
@@ -105,7 +131,7 @@ const Profile = () => {
  <input className="mb-3 rounded " type="text" id="Username"      placeholder="Username"
        value={username}      onChange={(e) => setUsername(e.target.value)}/>
  
- <button className="mt-4"  type="submit">update</button>
+ <button className="mt-4"  onClick={changeProfile} type="submit">update</button>
  
 
 </form>
