@@ -5,10 +5,8 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
-    alert("hi")
-    console.log(username)
-    console.log(password)
+  const handleLogin = async (event:any) => {
+    event.preventDefault();
     try {
       const response = await fetch('http://localhost:8080/login', {
         method: 'POST',
@@ -27,31 +25,38 @@ const Login = () => {
       const token = data.token;
 
       localStorage.setItem('token', token);
-      
+      // Redirect or handle successful login
+
     } catch (error) {
       console.error('Login failed:', error);
     }
   };
 
   return (
+    <form className="flex flex-col mt-12 w-72" onSubmit={handleLogin}>
+      <label className="mb-1" htmlFor="Username">Name</label>
+      <input
+        className="mb-3 rounded"
+        type="text"
+        id="Username"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
 
-<>
-<form className="flex flex-col mt-12 w-72 ">
- 
-  <label className="mb-1" htmlFor="Username">Name</label>
-  <input className="mb-3 rounded " type="text" id="Username"      placeholder="Username"
-        value={username}      onChange={(e) => setUsername(e.target.value)}/>
-  
-  <label className="mb-1" htmlFor="password">Email</label>
-  <input className="mb-3 rounded" type="password" id="password" name="password" 
+      <label className="mb-1" htmlFor="password">Password</label>
+      <input
+        className="mb-3 rounded"
+        type="password"
+        id="password"
+        name="password"
         placeholder="Password"
-        value={password}  onChange={(e) => setPassword(e.target.value)}/>
-  
-  <button className="mt-4" onClick={handleLogin} type="submit">Login</button>
-  
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-</form>
-</>
+      <button className="mt-4" type="submit">Login</button>
+    </form>
   );
 };
 
