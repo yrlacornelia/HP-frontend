@@ -15,47 +15,43 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [imageData, setimageData] = useState<string | ArrayBuffer | null>(null); 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const token = localStorage.getItem('token');
-      console.log(token)
+    const fetchCurrentUser = async () => {
       try {
-        const response = await fetch('http://localhost:8080/currentuser', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
+          const response = await fetch('http://localhost:8080/users/currentuser', {
+              method: 'GET',
+              credentials: 'include', 
+          });
+          
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
           }
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-
-        console.log(data)
-        setUser(data)
-        setUsername(data.username);
-        setimageData(data.imageData)
+          
+          const data = await response.json(); 
+          console.log(data)
+          setUser(data)
+          setUsername(data.username);
+          setimageData(data.imageData)
+          return data;
       } catch (error) {
-        console.error('Error fetching users:', error);
+          console.error("Failed to fetch current user:", error);
+          throw error;
       }
-    };
-
-    fetchUsers();
+  };
+  fetchCurrentUser();
   }, []);
 
 
 
   const changeProfile = async () => {
-    const token = localStorage.getItem('token');
     try {
-      const response = await fetch('http://localhost:8080/userSettings', {
+      const response = await fetch('http://localhost:8080/users/userSettings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Accept': 'application/json'
         },
-        body: JSON.stringify({ username })
+        body: JSON.stringify({ username }),
+        credentials: 'include'
       });
 
       if (!response.ok) {

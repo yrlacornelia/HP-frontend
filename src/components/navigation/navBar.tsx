@@ -15,6 +15,33 @@ const NavBar = () => {
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/logout', {
+                method: 'POST',
+                credentials: 'same-origin', // Ensure cookies are included (if using)
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Add any headers as needed
+                },
+                // Optionally send data if required by your backend
+                body: JSON.stringify({}) // You can pass data if your backend requires it
+            });
+    
+            if (response.ok) {
+                // Optionally clear any local storage or state related to authentication
+                // Redirect to login page or perform any other post-logout actions
+                window.location.href = '/login';
+            } else {
+                console.error('Logout failed:', response.statusText);
+                // Handle logout failure if needed
+            }
+        } catch (error) {
+            console.error('Logout failed:');
+            // Handle network or other errors
+        }
+    };
+    
 
     return (
         <div className={`text-yellow-light ${backgroundClass}`} style={{ fontFamily: arapey.className }}>
@@ -46,9 +73,7 @@ const NavBar = () => {
                     </Link>
                 </li>
                 <li className="px-4 py-2 hover:bg-gray-100">
-                    <Link href="/logout">
-                        <p>Logout</p>
-                    </Link>
+                <button onClick={handleLogout}>Logout</button>
                 </li>
             </ul>
         </li>

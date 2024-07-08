@@ -1,7 +1,46 @@
+'use client'
+import React, { useEffect, useState } from "react";
+import ChatFeedCard from "@/components/cards/chatFeedCard";
 import ChatSidebar from "@/components/navigation/chatSidebar";
-import Image from "next/image";
-
+type Message = {
+    id: number;
+    content: string;
+    createdAt: string;
+    sender: {
+        id: number;
+        username: string;
+        imageData: string;
+    };
+};
 const HouseChate = () => {
+    const [messages, setMessages] = useState<Message[]>([]); // Specify Message[] type
+
+
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:8080/chat/returnAllMessages', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setMessages(data); // Assuming API returns an array of messages
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        };
+
+        fetchMessages();
+    }, []); // Empty dependency array ensures it runs once on component mount
+
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
@@ -12,14 +51,16 @@ const HouseChate = () => {
                 </div>
 
             </div>
-            <div className=" border px-20 py-10 border-lg boder-black">
-
-                <div className="mb-5 flex gap-5"> <img className="border p-5 border-black rounded-full" ></img> <div><p className="">Lucia</p> <p> 5 minutes ago</p></div> </div>
-
-                <div>Lorem ipsum dolor sit amet consectetur. Purus massa lacinia nulla metus quam risus. Libero rhoncus at faucibus egestas lacus. Et in velit eget auctor eleifend ut nullam. In consectetur tellus varius montes quis quis risus elit tincidunt. Ut justo ut pellentesque at turpis pellentesque porta id. Gravida vel nisl risus massa massa etiam. Diam mauris suspendisse tristique interdum nisl. Id nisl aliquam pellentesque arcu convallis etiam duis. Aenean metus habitasse aliquam amet. Eu non mauris at id justo varius quis.
-                    Lectus lorem sit consectetur tellus enim aliquet consectetur enim. At blandit in sed donec in.</div>
-
-            </div>
+            {messages.map((message) => (
+                    <ChatFeedCard
+                        key={message.id}
+                        user={message.sender.username}
+                        time={message.createdAt}
+                        content={message.content}
+                        img={message.sender.imageData}
+                    />
+                ))}
+            
         </div>
 
         <div className="w-80 m-5  rounded bg-black h-max p-5  flex flex-col gap-5 ">
