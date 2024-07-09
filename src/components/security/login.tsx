@@ -1,63 +1,78 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Login = () => {
+const fetchCsrfToken = async () => {
+    const response = await fetch('http://localhost:8080/csrf-token', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    return data.token;
+};
+
+const LoginForm = () => {
+    const [csrfToken, setCsrfToken] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async (event:any) => {
-        event.preventDefault();
+    useEffect(() => {
+        const getCsrfToken = async () => {
+            const token = await fetchCsrfToken();
+            setCsrfToken(token);
+        };
+        getCsrfToken();
+    }, []);
 
-        try {
-            const response = await fetch('http://localhost:8080/login', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: 'include'
-            });
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
 
-            if (!response.ok) {
-                throw new Error('Failed to log in');
-            }
+  
+const formData = new URLSearchParams();
+formData.append('username', username);
+formData.append('password', password);
 
-            const data = await response.json();
-            console.log(data);
+const response = await fetch('http://localhost:8080/login', {
+    method: 'POST',
+    headers: {
+        'X-CSRF-TOKEN': csrfToken
+    },
+    body: formData,
+    credentials: 'include'
+});
+
+const data = await response.json();
+console.log(data);
+
+        if (response.ok) {
             // Handle successful login
-        } catch (error) {
-            console.error('Error logging in:', error);
-            // Handle login error
+        } else {
+            // Handle error
         }
     };
 
     return (
-        <form className="flex flex-col mt-12 w-72" onSubmit={handleLogin}>
-            <label className="mb-1" htmlFor="Username">Name</label>
-            <input
-                className="mb-3 rounded"
-                type="text"
-                id="Username"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-
-            <label className="mb-1" htmlFor="password">Password</label>
-            <input
-                className="mb-3 rounded"
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <button className="mt-4" type="submit">Login</button>
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            <input type="hidden" name="_csrf" value={csrfToken} />
+            <button type="submit">Login</button>
         </form>
     );
 };
 
-export default Login;
+export default LoginForm;

@@ -3,7 +3,14 @@ import Link from "next/link";
 import Image from 'next/image'
 import { arapey } from "@/app/(home)/fonts";
 import { usePathname } from 'next/navigation';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+const fetchCsrfToken = async () => {
+    const response = await fetch('http://localhost:8080/csrf-token', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    return data.token;
+};
 
 const NavBar = () => {
     const navigation = usePathname();
@@ -15,30 +22,37 @@ const NavBar = () => {
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
+    const [csrfToken, setCsrfToken] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        const getCsrfToken = async () => {
+            const token = await fetchCsrfToken();
+            setCsrfToken(token);
+        };
+        getCsrfToken();
+    }, []);
     const handleLogout = async () => {
+ 
+    
         try {
             const response = await fetch('http://localhost:8080/logout', {
                 method: 'POST',
-                credentials: 'same-origin', // Ensure cookies are included (if using)
+                credentials: 'include', // Include cookies in the request
                 headers: {
-                    'Content-Type': 'application/json'
-                    // Add any headers as needed
-                },
-                // Optionally send data if required by your backend
-                body: JSON.stringify({}) // You can pass data if your backend requires it
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Include CSRF token if CSRF protection is enabled
+                }
             });
     
             if (response.ok) {
-                // Optionally clear any local storage or state related to authentication
-                // Redirect to login page or perform any other post-logout actions
                 window.location.href = '/login';
             } else {
                 console.error('Logout failed:', response.statusText);
-                // Handle logout failure if needed
             }
         } catch (error) {
             console.error('Logout failed:');
-            // Handle network or other errors
         }
     };
     
