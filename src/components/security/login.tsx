@@ -23,7 +23,7 @@ const LoginForm = () => {
     }, []);
 
     const handleSubmit = async (e:any) => {
-        e.preventDefault();
+
 
   
 const formData = new URLSearchParams();

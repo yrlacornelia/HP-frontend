@@ -39,14 +39,17 @@ const NavBar = () => {
         try {
             const response = await fetch('http://localhost:8080/logout', {
                 method: 'POST',
-                credentials: 'include', // Include cookies in the request
+                credentials: 'include', 
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken // Include CSRF token if CSRF protection is enabled
+                    'X-CSRF-TOKEN': csrfToken 
                 }
             });
     
             if (response.ok) {
+                setCsrfToken('');
+                setUsername('');
+                setPassword('');
                 window.location.href = '/login';
             } else {
                 console.error('Logout failed:', response.statusText);
