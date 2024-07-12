@@ -34,19 +34,19 @@ const NavBar = () => {
         getCsrfToken();
     }, []);
     const handleLogout = async () => {
- 
-    
+        console.log('Initiating logout process...');
         try {
             const response = await fetch('http://localhost:8080/logout', {
                 method: 'POST',
-                credentials: 'include', 
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken 
+                    'X-CSRF-TOKEN': csrfToken
                 }
             });
     
             if (response.ok) {
+                console.log('Logout successful.');
                 setCsrfToken('');
                 setUsername('');
                 setPassword('');
@@ -55,7 +55,7 @@ const NavBar = () => {
                 console.error('Logout failed:', response.statusText);
             }
         } catch (error) {
-            console.error('Logout failed:');
+            console.error('Logout failed:', error);
         }
     };
     

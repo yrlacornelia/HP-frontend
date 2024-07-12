@@ -1,15 +1,13 @@
 'use client'
+import { fetchCsrfToken } from '@/app/utils/auth';
+import { cookies } from 'next/dist/client/components/headers';
+import { useRouter } from 'next/navigation'
+import type { NextRequest } from 'next/server'
 import React, { useState, useEffect } from 'react';
 
-const fetchCsrfToken = async () => {
-    const response = await fetch('http://localhost:8080/csrf-token', {
-        credentials: 'include'
-    });
-    const data = await response.json();
-    return data.token;
-};
-
 const LoginForm = () => {
+
+const router = useRouter()
     const [csrfToken, setCsrfToken] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -17,6 +15,7 @@ const LoginForm = () => {
     useEffect(() => {
         const getCsrfToken = async () => {
             const token = await fetchCsrfToken();
+            console.log(token)
             setCsrfToken(token);
         };
         getCsrfToken();
@@ -24,11 +23,12 @@ const LoginForm = () => {
 
     const handleSubmit = async (e:any) => {
 
-
-  
+    e.preventDefault()
+  console.log(csrfToken)
 const formData = new URLSearchParams();
 formData.append('username', username);
 formData.append('password', password);
+
 
 const response = await fetch('http://localhost:8080/login', {
     method: 'POST',
@@ -43,9 +43,8 @@ const data = await response.json();
 console.log(data);
 
         if (response.ok) {
-            // Handle successful login
+            console.log("HELLO ")
         } else {
-            // Handle error
         }
     };
 

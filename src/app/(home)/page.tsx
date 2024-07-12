@@ -24,7 +24,6 @@ const Home = () => {
 }, []);
   return (
     <>
-<UsersList />
 
       <div className="flex gap-20 mt-40 justify-center items-center">
         <div className=" w-96 h-96 flex overflow-hidden items-center justify-center">

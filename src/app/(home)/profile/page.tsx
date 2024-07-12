@@ -1,4 +1,5 @@
 'use client'
+import { fetchCsrfToken } from "@/app/utils/auth";
 import DefaultBtn from "@/components/buttons/defaultBtn";
 import Settingsform from "@/components/form/settingsform";
 import Login from "@/components/security/login";
@@ -10,7 +11,16 @@ interface User {
   imageData:string;
 }
 const Profile = () => {
+  const [csrfToken, setCsrfToken] = useState('');
 
+  useEffect(() => {
+      const getCsrfToken = async () => {
+          const token = await fetchCsrfToken();
+          console.log(token)
+          setCsrfToken(token);
+      };
+      getCsrfToken();
+  }, []);
   const [user, setUser] = useState<User | null>(null);
   const [username, setUsername] = useState("");
   const [imageData, setimageData] = useState<string | ArrayBuffer | null>(null); 
@@ -48,7 +58,10 @@ const Profile = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+    
+            'X-CSRF-TOKEN': csrfToken
+        
         },
         body: JSON.stringify({ username }),
         credentials: 'include'

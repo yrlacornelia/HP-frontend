@@ -1,6 +1,8 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import ChatFeedCard from "@/components/cards/chatFeedCard";
+import SockJS from 'sockjs-client';
+import Stomp, { Client } from 'stompjs';
 import ChatSidebar from "@/components/navigation/chatSidebar";
 type Message = {
     id: number;
@@ -12,55 +14,105 @@ type Message = {
         imageData: string;
     };
 };
-const HouseChate = () => {
-    const [messages, setMessages] = useState<Message[]>([]); // Specify Message[] type
+type RecivedMessage = {
+    id: number;
+    content: string;
+    createdAt: string;
 
+};
+const HouseChate = () => {
+    const [stompClient, setStompClient] = useState<Client | null>(null);
+    const [message, setMessage] = useState('');
+    const [receivedMessage, setReceivedMessage] = useState('');
+    const [receivedMessages, setReceivedMessages] = useState<{ content: string; sender: { username: string; } }[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]); 
+    useEffect(() => {
+        const socket = new SockJS('http://localhost:8080/ws');
+        const stomp = Stomp.over(socket);
+        
+        stomp.connect({}, () => {
+          console.log('Connected to WebSocket');
+          
+          stomp.subscribe('/topic/public', (response) => {
+            const themessage = JSON.parse(response.body);
+            setReceivedMessage(themessage.content);
+            
+          });
+
+          setStompClient(stomp);
+        }, (error) => {
+          console.error('Connection error', error);
+        });
+        return () => {
+          if (stompClient) {
+            stompClient.disconnect(() => {
+              console.log('Disconnected from WebSocket');
+            }, {});
+          }
+      
+        };
+                
+      }, []);
+
+    
+      const sendMessage = () => {
+     
+       if (stompClient && message) {
+          const chatMessage = {
+            content: message,
+            sender: { username: 'hej' } 
+          };
+          stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(chatMessage));
+        setReceivedMessages(receivedMessages => [...receivedMessages, chatMessage]);
+          setMessage('');
+        }
+      };    
+
+      
 
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const token = localStorage.getItem('token');
                 const response = await fetch('http://localhost:8080/chat/returnAllMessages', {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+                    credentials: 'include', 
+                });      
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
 
                 const data = await response.json();
-                setMessages(data); // Assuming API returns an array of messages
+                setMessages(data); 
             } catch (error) {
                 console.error('Error fetching messages:', error);
             }
         };
 
         fetchMessages();
-    }, []); // Empty dependency array ensures it runs once on component mount
-
+    }, []); 
+console.log(receivedMessage)
+console.log(receivedMessages)
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
             <div className=" border px-20 py-10 border-lg boder-black">
                 <p className="mb-5">Hello yrla, welcome to the chat of house Griffindor</p>
                 <div >
-                    <textarea placeholder="Whats on your mind?" name="textarea" id="textarea" rows={2} cols={70}></textarea>
+                    <textarea placeholder="Whats on your mind?" name="textarea" id="textarea" onChange={(e) => setMessage(e.target.value)} rows={2} cols={70}></textarea>
                 </div>
-
+                <button onClick={sendMessage}>Send</button>
             </div>
-            {messages.map((message) => (
+    
+            {receivedMessages.map((message) => (
                     <ChatFeedCard
-                        key={message.id}
+                        key={1}
                         user={message.sender.username}
-                        time={message.createdAt}
+                        time={"11"}
                         content={message.content}
-                        img={message.sender.imageData}
+                        img={"/"}
                     />
                 ))}
-            
         </div>
 
         <div className="w-80 m-5  rounded bg-black h-max p-5  flex flex-col gap-5 ">
