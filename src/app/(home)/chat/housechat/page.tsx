@@ -21,10 +21,35 @@ type RecivedMessage = {
 
 };
 const HouseChate = () => {
+
+    const [user, setUser] = useState("")
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+          try {
+              const response = await fetch('http://localhost:8080/users/currentuser', {
+                  method: 'GET',
+                  credentials: 'include', 
+              });
+              
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              
+              const data = await response.json(); 
+              setUser(data.username);
+              return data.username;
+          } catch (error) {
+              console.error("Failed to fetch current user:", error);
+              throw error;
+          }
+      };
+      fetchCurrentUser();
+      }, []);
+
+
     const [stompClient, setStompClient] = useState<Client | null>(null);
     const [message, setMessage] = useState('');
-    const [receivedMessage, setReceivedMessage] = useState('');
-    const [receivedMessages, setReceivedMessages] = useState<{ content: string; sender: { username: string; } }[]>([]);
+    const [receivedMessages, setReceivedMessages] = useState<{ id: number; createdAt: string;content: string; sender: { username: string; } }[]>([]);
     const [messages, setMessages] = useState<Message[]>([]); 
     useEffect(() => {
         const socket = new SockJS('http://localhost:8080/ws');
@@ -32,13 +57,16 @@ const HouseChate = () => {
         
         stomp.connect({}, () => {
           console.log('Connected to WebSocket');
-          
           stomp.subscribe('/topic/public', (response) => {
             const themessage = JSON.parse(response.body);
-            setReceivedMessage(themessage.content);
             
-          });
-
+            setReceivedMessages(receivedMessages => {
+                if (!receivedMessages.some(msg => msg.id === themessage.id)) {
+                    return [themessage, ...receivedMessages];
+                }
+                return receivedMessages;
+            });
+        });
           setStompClient(stomp);
         }, (error) => {
           console.error('Connection error', error);
@@ -60,14 +88,13 @@ const HouseChate = () => {
        if (stompClient && message) {
           const chatMessage = {
             content: message,
-            sender: { username: 'hej' } 
+            sender: { username:user} 
           };
           stompClient.send('/app/chat.sendMessage', {}, JSON.stringify(chatMessage));
-        setReceivedMessages(receivedMessages => [...receivedMessages, chatMessage]);
+
           setMessage('');
         }
       };    
-
       
 
     useEffect(() => {
@@ -91,8 +118,6 @@ const HouseChate = () => {
 
         fetchMessages();
     }, []); 
-console.log(receivedMessage)
-console.log(receivedMessages)
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
@@ -105,6 +130,15 @@ console.log(receivedMessages)
             </div>
     
             {receivedMessages.map((message) => (
+                    <ChatFeedCard
+                        key={1}
+                        user={message.sender.username}
+                        time={message.createdAt}
+                        content={message.content}
+                        img={"/"}
+                    />
+                ))}
+                      {messages.map((message) => (
                     <ChatFeedCard
                         key={1}
                         user={message.sender.username}
