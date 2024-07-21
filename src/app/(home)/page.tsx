@@ -6,22 +6,11 @@ import Image from "next/image";
 import TextCard from "@/components/cards/textCard";
 import OwlPost from "@/components/form/owlpost";
 import styles from './home.module.css'
-import UsersList from "@/components/testfetch";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  useEffect(() => {
-    const fetchCsrfToken = async () => {
-      const response = await fetch('http://localhost:8080/userLoggedIn', {
-          credentials: 'include'
-      });
-      const data = await response.json();
-      console.log(data)
-      return data;
-  };
 
-    fetchCsrfToken();
-}, []);
+
   return (
     <>
 

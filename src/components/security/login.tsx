@@ -1,5 +1,5 @@
 'use client'
-import { fetchCsrfToken } from '@/app/utils/auth';
+import { fetchCsrfToken } from '@/app/utils/api';
 import { cookies } from 'next/dist/client/components/headers';
 import { useRouter } from 'next/navigation'
 import type { NextRequest } from 'next/server'
@@ -15,7 +15,6 @@ const router = useRouter()
     useEffect(() => {
         const getCsrfToken = async () => {
             const token = await fetchCsrfToken();
-            console.log(token)
             setCsrfToken(token);
         };
         getCsrfToken();
@@ -24,7 +23,6 @@ const router = useRouter()
     const handleSubmit = async (e:any) => {
 
     e.preventDefault()
-  console.log(csrfToken)
 const formData = new URLSearchParams();
 formData.append('username', username);
 formData.append('password', password);
@@ -43,8 +41,10 @@ const data = await response.json();
 console.log(data);
 
         if (response.ok) {
+            localStorage.setItem("user", "true");
             console.log("HELLO ")
         } else {
+            
         }
     };
 

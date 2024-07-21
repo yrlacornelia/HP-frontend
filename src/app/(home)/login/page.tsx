@@ -2,8 +2,9 @@
 import DefaultBtn from "@/components/buttons/defaultBtn";
 import Settingsform from "@/components/form/settingsform";
 import Login from "@/components/security/login";
+import { setCookie } from "cookies-next";
+import { redirect } from "next/dist/server/api-utils";
 import Image from "next/image";
-import { useEffect } from "react";
 
 const LoginPage = () => {
 

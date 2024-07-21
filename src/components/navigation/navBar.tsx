@@ -4,13 +4,8 @@ import Image from 'next/image'
 import { arapey } from "@/app/(home)/fonts";
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
-const fetchCsrfToken = async () => {
-    const response = await fetch('http://localhost:8080/csrf-token', {
-        credentials: 'include'
-    });
-    const data = await response.json();
-    return data.token;
-};
+import { fetchCsrfToken } from "@/app/utils/api";
+import { deleteCookie } from 'cookies-next';
 
 const NavBar = () => {
     const navigation = usePathname();
@@ -33,14 +28,14 @@ const NavBar = () => {
         };
         getCsrfToken();
     }, []);
-    const handleLogout = async () => {
+    const handleLogout = async (event:any) => {
+        event.preventDefault;
         console.log('Initiating logout process...');
         try {
             const response = await fetch('http://localhost:8080/logout', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken
                 }
             });
