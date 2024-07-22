@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { anybody } from "./fonts";
 import "./globals.css";
-import NavBar from "@/components/navigation/navBar";
+import { LayoutComp } from "@/components/layoutComp";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,18 +11,13 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode,
 }>) {
-
-
 
   return (
     <html lang="en">
-      
-      <body className={anybody.className}>   
-
-      <NavBar />
-      {children}
+      <body className={anybody.className}>
+        <LayoutComp>{children}</LayoutComp>
       </body>
     </html>
   );

@@ -5,8 +5,6 @@ import { arapey } from "@/app/(home)/fonts";
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { fetchCsrfToken } from "@/app/utils/api";
-import { deleteCookie } from 'cookies-next';
-
 const NavBar = () => {
     const navigation = usePathname();
     const isHomePage = navigation === '/';
@@ -18,8 +16,6 @@ const NavBar = () => {
         setIsOpen(!isOpen);
     };
     const [csrfToken, setCsrfToken] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
     useEffect(() => {
         const getCsrfToken = async () => {
@@ -43,9 +39,7 @@ const NavBar = () => {
             if (response.ok) {
                 console.log('Logout successful.');
                 setCsrfToken('');
-                setUsername('');
-                setPassword('');
-                window.location.href = '/login';
+                window.location.href = '/';
             } else {
                 console.error('Logout failed:', response.statusText);
             }

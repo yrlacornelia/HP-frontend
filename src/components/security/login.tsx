@@ -28,7 +28,7 @@ formData.append('username', username);
 formData.append('password', password);
 
 
-const response = await fetch('http://localhost:8080/login', {
+try{ const response = await fetch('http://localhost:8080/login', {
     method: 'POST',
     headers: {
         'X-CSRF-TOKEN': csrfToken
@@ -41,11 +41,22 @@ const data = await response.json();
 console.log(data);
 
         if (response.ok) {
-            localStorage.setItem("user", "true");
-            console.log("HELLO ")
+            window.location.href = '/profile';
         } else {
+            console.log("wrongerror")
             
         }
+    }catch (error) {
+        if (error) {
+          switch (error) {
+            case 'CredentialsSignin':
+              return 'Invalid credentials.'
+            default:
+              return 'Something went wrong.'
+          }
+        }
+        throw error
+      }
     };
 
     return (
