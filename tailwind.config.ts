@@ -6,13 +6,14 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./public/images/**/*.{png,jpg,jpeg,webp,avif}", 
   ],
   
   theme: {
     extend: {
       backgroundImage: {
         'hpbg': "url('/images/hpbackground.avif')",
-        'loginbg': "url('/images/hpbackground.avif')",
+        'loginbg': "url('/images/logincastle.jpg')",
         'quidditch': "url('/images/homefeed/Quidditch_pitch.webp')",
       },
       colors: {
