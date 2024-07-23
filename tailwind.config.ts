@@ -12,6 +12,7 @@ const config: Config = {
     extend: {
       backgroundImage: {
         'hpbg': "url('/images/hpbackground.avif')",
+        'loginbg': "url('/images/hpbackground.avif')",
         'quidditch': "url('/images/homefeed/Quidditch_pitch.webp')",
       },
       colors: {

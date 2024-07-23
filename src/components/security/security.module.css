@@ -1,0 +1,63 @@
+.container{
+    color: #bcb8b8e0;
+height: 100%;
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.formcontainer{
+ display: flex;
+ flex-direction: column;
+z-index: 1;
+margin-top: 9rem;
+padding-top: 6rem;
+gap: 20px;
+align-items: center;
+background-color: rgba(0, 0, 0, 0.182);
+width: 419px;
+height: 700px;
+}
+.input {
+    width: 20vw;
+    height: 54px;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 0 .6rem;
+    border: 1px solid rgba(255, 255, 255, 0.658);
+     }
+  
+  .label {
+    display: block;
+    margin-bottom: .3rem;
+    font-size: .9rem;
+    transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+  }
+  
+  .input:focus, .input-group:hover .input {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 5px #f3f3f3;
+  }
+  
+  .input-group:hover .label, .input:focus {
+    color: #05060fc2;
+  }
+
+  .githubLink {
+    border-radius: 4px;
+    width: 20vw;
+    height: 54px;
+    gap: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.658);
+    cursor: pointer;
+  }
+
+  /* Group 81 */
+
+
+
