@@ -62,19 +62,20 @@ const LoginForm = () => {
             <div className='flex flex-col'>
                 <label className={styles.label} htmlFor="username">Username</label>
                 <input
+           style={{ color: 'white' }}
                 className={styles.input}
-                   placeholder='username'
                     type="text"
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    
                 />
             </div>
             <div className='flex flex-col'>
             <label className={styles.label} htmlFor="password">Password</label>
                 <input 
                     className={styles.input}
-                placeholder='password'
+                    style={{ color: 'white' }}
                     type="password"
                     id="password"
                     value={password}

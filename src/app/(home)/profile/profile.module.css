@@ -2,6 +2,7 @@
     color: #bcb8b8e0;
 height: 100%;
 width: 100%;
+margin-top: 2rem;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -10,11 +11,9 @@ align-items: center;
  display: flex;
  flex-direction: column;
 z-index: 1;
-margin-top: 9rem;
-padding-top: 6rem;
+
 gap: 20px;
 align-items: center;
-background-color: rgba(0, 0, 0, 0.656);
 width: 419px;
 height: 700px;
 }
@@ -22,7 +21,6 @@ height: 700px;
   color: white;
     width: 20vw;
     height: 54px;
-    background-color: transparent;
     border-radius: 4px;
     padding: 0 .6rem;
     border: 1px solid rgba(255, 255, 255, 0.658);

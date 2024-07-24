@@ -2,9 +2,12 @@
 import { fetchCsrfToken, fetchCurrentUser, changeProfile, uploadImage } from "@/app/utils/api";
 import DefaultBtn from "@/components/buttons/defaultBtn";
 import Settingsform from "@/components/form/settingsform";
+import { arapey } from "../fonts";
 import Login from "@/components/security/login";
+import styles from './profile.module.css'
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import FormComp from "@/components/form/form";
 
 interface User {
     username: string;
@@ -75,28 +78,57 @@ const Profile = () => {
 
     return (
         <div className="flex flex-col items-center mt-20">
-            <h2 className="uppercase">Edit Profile</h2>
+            <h2  className={`mb-2 uppercase ${arapey.className}`}>WELCOME {user.username}!</h2>
+            <h3  className={`mb-10 ${arapey.className}`}>Gryffindor house</h3>
 
             <div className="w-56 h-56 mt-4 flex border rounded-full overflow-hidden items-center justify-center">
                 <Image className="h-full w-full" width={200} height={200} src={`data:image/jpeg;base64,${imageData}`} alt="Profile" />
             </div>
             <input type="file" onChange={onImageChange} className="filetype" />
             <div className="mt-2"><button onClick={handleUploadImage}>Change Profile Picture</button></div>
-            <h4 className="mt-4">Griffyndor House</h4>
 
-            <form className="flex flex-col mt-12 w-72" onSubmit={handleChangeProfile}>
-                <label className="mb-1" htmlFor="Username">Name</label>
+            <div className={styles.container}>
+        <div className={styles.formcontainer}>
+        <form className='flex flex-col gap-6'  onSubmit={handleChangeProfile}>
+            <div className='flex flex-col'>
+                <label className={styles.label} htmlFor="username">Username</label>
                 <input
-                    className="mb-3 rounded"
-                    type="text"
-                    id="Username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+           style={{ color: 'black' }}
+                className={styles.input}
+                type="text"
+                id="Username"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                    
                 />
-                <button className="mt-4" type="submit">Update</button>
-            </form>
+            </div>
+            <div className='flex flex-col'>
+                <label className={styles.label} htmlFor="email">Email</label>
+                <input
+           style={{ color: 'black' }}
+                className={styles.input}
+                type="text"
+                id="email"
+                placeholder="yrla@hotmail.com"
+                value="yrla@hotmail.com"
+                // onChange={(e) => setUsername(e.target.value)}
+                    
+                />
+            </div>
+  <input type="hidden" name="_csrf" value={csrfToken} />
+
+            <button className='m-auto mt-5 border bg-white text-black w-full py-3' type="submit">Save Changes</button>
+   
+       
+   </form> 
+   <div className='w-full h-10 text-center'>
+       {/* {errorMessage && <p className='m-auto ' style={{ color: 'red' }}>{errorMessage}</p>} */}
+   </div>
+
         </div>
+        </div>
+                 </div>
     );
 }
 
