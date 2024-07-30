@@ -1,5 +1,6 @@
 'use client'
 import { createPerson, createUser, fetchCsrfToken } from "@/app/utils/api";
+import AdminSidebar from "@/components/navigation/adminSidebar";
 import { useEffect, useState } from "react";
 
 const NewUserPage = () => {
@@ -32,7 +33,9 @@ const NewUserPage = () => {
             console.error('Image upload failed:', error);
         }
     };  
-    return ( <>
+    return (    <div className="relative">
+        <AdminSidebar />
+        <div className="flex gap-10 flex justify-center items-center flex-col">
             <button onClick={createnewperson}>create new person</button>
             <form className='flex flex-col gap-6'  onSubmit={handleCreateUser}>
             <div className='flex flex-col'>
@@ -62,8 +65,10 @@ const NewUserPage = () => {
             <button className='m-auto mt-5 border bg-white text-black w-full py-3' type="submit">create person</button>
    
        
-   </form> 
-    </> );
+   </form>
+   </div> 
+   
+   </div>  );
 }
  
 export default NewUserPage;

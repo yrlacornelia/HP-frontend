@@ -1,5 +1,7 @@
 'use client';
 
+import { time } from "console";
+
 
 export const fetchCsrfToken = async () => {
     const response = await fetch('http://localhost:8080/csrf-token', {
@@ -130,7 +132,6 @@ export const createPerson = async (csrfToken: any) => {
             credentials: 'include'
         });
 
-    // Handle response
     if (response.ok) {
         console.log('User created successfully');
     } else {
@@ -167,3 +168,31 @@ export const deleteUser = async (csrfToken:any, userId:number) => {
     const data = await response.json();
     return data;
 };
+
+
+
+export const createEvent = async (csrfToken: any, title:string, content:string, time:any) => {
+    const eventData = {
+        title: title,
+        content: content,
+  
+        
+    };
+
+    const response = await fetch('http://localhost:8080/admin/createEvent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(eventData),
+        credentials: 'include'
+    });
+
+if (response.ok) {
+    console.log('User created successfully');
+} else {
+    console.error('Error creating user:', response.statusText);
+}
+}
