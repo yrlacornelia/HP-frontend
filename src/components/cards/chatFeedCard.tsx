@@ -21,7 +21,7 @@ const ChatFeedCard: React.FC<ChatFeedCardProps> = ({ user, time, content, img })
     
     return (
         <>
-            <div className="border px-20 py-10 border-lg border-black">
+            <div className="border px-20 py-10 bg-blue border-transparent  rounded-md ">
                 <div className="mb-5 flex gap-5">
 
                     <Image className="h-10 w-10  rounded-full" width={200} height={200}  src={`data:image/jpeg;base64,${img}`} alt="letter" />

@@ -121,12 +121,15 @@ const HouseChate = () => {
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
-            <div className=" border px-20 py-10 border-lg boder-black">
+            <div onKeyDown={(e) => {
+        if (e.key === "Enter")
+            sendMessage();
+        }} className=" border px-20 py-10  rounded-md border-transparent bg-blue mt-10">
                 <p className="mb-5">Hello yrla, welcome to the chat of house Griffindor</p>
                 <div >
-                    <textarea placeholder="Whats on your mind?" name="textarea" id="textarea" onChange={(e) => setMessage(e.target.value)} rows={2} cols={70}></textarea>
+                    <textarea className="text-black" placeholder="Whats on your mind?" name="textarea" id="textarea" onChange={(e) => setMessage(e.target.value)} rows={2} cols={70}></textarea>
                 </div>
-                <button onClick={sendMessage}>Send</button>
+                {/* <button onClick={sendMessage}>Send</button> */}
             </div>
     
             {receivedMessages.map((message) => (

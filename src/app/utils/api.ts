@@ -53,15 +53,20 @@ export const changeProfile = async (csrfToken:any, username:string) => {
     }
 };
 
-
-export const uploadImage = async (imageData:any) => {
+export const uploadImage = async (imageData: any, csrfToken: any) => {
+    console.log(imageData)
     try {
+
         const formData = new FormData();
         formData.append('image', imageData);
-
+console.log(imageData)
         const response = await fetch('http://localhost:8080/users/uploadProfileImage', {
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
             body: formData,
+            credentials: 'include',
         });
 
         if (!response.ok) {
@@ -75,6 +80,7 @@ export const uploadImage = async (imageData:any) => {
         throw error;
     }
 };
+
 
 export const handleSubmit = async (username: string, password: string, csrfToken:any) => {
     const formData = new URLSearchParams();
@@ -91,3 +97,73 @@ export const handleSubmit = async (username: string, password: string, csrfToken
         credentials: 'include'
     })
 }
+export const createPerson = async (csrfToken: any) => {
+    const userData = {
+        username: "TEST",
+        password: "testagain"
+    };
+
+    const response = await fetch('http://localhost:8080/users/createNewPerson', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(userData),
+        credentials: 'include'
+    })};
+    export const createUser = async (csrfToken: any, username:string, password:string) => {
+        const userData = {
+            username: username,
+            password: password
+        };
+    
+        const response = await fetch('http://localhost:8080/users/createNewPerson', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify(userData),
+            credentials: 'include'
+        });
+
+    // Handle response
+    if (response.ok) {
+        console.log('User created successfully');
+    } else {
+        console.error('Error creating user:', response.statusText);
+    }
+}
+
+
+
+// Admin
+
+export const fetchAllusers = async () => {
+    const response = await fetch('http://localhost:8080/admin/allusers', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    return data;
+};
+
+export const deleteUser = async (csrfToken:any, userId:number) => {
+    console.log(userId)
+    const response = await fetch(`http://localhost:8080/admin/user/${userId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+    });
+    
+    if (!response.ok) {
+        throw new Error('Failed to delete user');
+    }
+    
+    const data = await response.json();
+    return data;
+};
