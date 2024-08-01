@@ -11,6 +11,8 @@ export const fetchCsrfToken = async () => {
     return data.token;
 };
 
+
+// profile 
 export const fetchCurrentUser = async () => {
     try {
         const response = await fetch('http://localhost:8080/users/currentuser', {
@@ -99,6 +101,65 @@ export const handleSubmit = async (username: string, password: string, csrfToken
         credentials: 'include'
     })
 }
+
+
+
+// Admin
+
+export const fetchAllusers = async () => {
+    const response = await fetch('http://localhost:8080/admin/allusers', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    return data;
+};
+
+export const deleteUser = async (csrfToken:any, userId:number) => {
+    console.log(userId)
+    const response = await fetch(`http://localhost:8080/admin/user/${userId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+    });
+    
+    if (!response.ok) {
+        throw new Error('Failed to delete user');
+    }
+    
+    const data = await response.json();
+    return data;
+};
+
+
+
+export const createEvent = async (csrfToken: any, title:string, content:string, time:any) => {
+    console.log(time)
+    const eventData = {
+        title: title,
+        content: content,
+        startTime:time
+        
+    };
+
+    const response = await fetch('http://localhost:8080/admin/createEvent', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(eventData),
+        credentials: 'include'
+    });
+
+if (response.ok) {
+    console.log('User created successfully');
+} else {
+    console.error('Error creating user:', response.statusText);
+}
+}
 export const createPerson = async (csrfToken: any) => {
     const userData = {
         username: "TEST",
@@ -140,59 +201,12 @@ export const createPerson = async (csrfToken: any) => {
 }
 
 
+/// chat
 
-// Admin
-
-export const fetchAllusers = async () => {
-    const response = await fetch('http://localhost:8080/admin/allusers', {
+export const fetchAllEvents = async () => {
+    const response = await fetch('http://localhost:8080/users/allEvents', {
         credentials: 'include'
     });
     const data = await response.json();
     return data;
 };
-
-export const deleteUser = async (csrfToken:any, userId:number) => {
-    console.log(userId)
-    const response = await fetch(`http://localhost:8080/admin/user/${userId}`, {
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-            'X-CSRF-TOKEN': csrfToken
-        },
-    });
-    
-    if (!response.ok) {
-        throw new Error('Failed to delete user');
-    }
-    
-    const data = await response.json();
-    return data;
-};
-
-
-
-export const createEvent = async (csrfToken: any, title:string, content:string, time:any) => {
-    const eventData = {
-        title: title,
-        content: content,
-  
-        
-    };
-
-    const response = await fetch('http://localhost:8080/admin/createEvent', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify(eventData),
-        credentials: 'include'
-    });
-
-if (response.ok) {
-    console.log('User created successfully');
-} else {
-    console.error('Error creating user:', response.statusText);
-}
-}

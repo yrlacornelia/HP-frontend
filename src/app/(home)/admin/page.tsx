@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 import './adminstyles.css';
 import AdminSidebar from "@/components/navigation/adminSidebar";
 
-// Assuming you have a User type
 type User = {
 id: number;
   name: string;
@@ -70,7 +69,7 @@ const AdminPage = () => {
                 <td>{user.occupation}</td>
                 <td>
                 <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
-             
+  
                 </td>
               </tr>
             ))}
