@@ -5,7 +5,7 @@ import SockJS from 'sockjs-client';
 import Stomp, { Client } from 'stompjs';
 import ChatSidebar from "@/components/navigation/chatSidebar";
 import EventCard from "@/components/cards/eventCard";
-import { fetchAllEvents } from "@/app/utils/api";
+import { fetchAllEvents, fetchCsrfToken } from "@/app/utils/api";
 type Message = {
     id: number;
     content: string;
@@ -50,6 +50,7 @@ const HouseChate = () => {
       useEffect(() => {
         const fetchAllUsers = async () => {
             const users = await fetchAllEvents();
+            console.log(users)
             setEvents(users);
        
         };
@@ -59,7 +60,7 @@ const HouseChate = () => {
 
     const [stompClient, setStompClient] = useState<Client | null>(null);
     const [message, setMessage] = useState('');
-    const [events, setEvents] = useState<{id: number; title: string; startTime: string;content: string; }[]>([]);
+    const [events, setEvents] = useState<{id: number; title: string; startTime: string;content: string; attendees: number;}[]>([]);
     const [receivedMessages, setReceivedMessages] = useState<{ id: number; createdAt: string;content: string; sender: { username: string; } }[]>([]);
     const [messages, setMessages] = useState<Message[]>([]); 
     useEffect(() => {
@@ -129,6 +130,39 @@ const HouseChate = () => {
 
         fetchMessages();
     }, []); 
+
+     useEffect(() => {
+        const getCsrfToken = async () => {
+            const token = await fetchCsrfToken();
+            setCsrfToken(token);
+        };
+        getCsrfToken();
+    }, []);
+
+    const [csrfToken, setCsrfToken] = useState('');
+        const setAttend = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/users/setEvent', {
+                    method: 'POST',
+                    credentials: 'include', 
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                });      
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+           
+            } catch (error) {
+                console.error('Error fetching messages:', error);
+            }
+        };
+console.log(events)
+      
+
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
@@ -145,7 +179,7 @@ const HouseChate = () => {
     
             {receivedMessages.map((message) => (
                     <ChatFeedCard
-                        key={1}
+                        key={message.id}
                         user={message.sender.username}
                         time={message.createdAt}
                         content={message.content}
@@ -154,7 +188,7 @@ const HouseChate = () => {
                 ))}
                       {messages.map((message) => (
                     <ChatFeedCard
-                        key={1}
+                        key={message.id}
                         user={message.sender.username}
                         time={message.createdAt}
                         content={message.content}
@@ -166,12 +200,16 @@ const HouseChate = () => {
         <div>
              {events.map((event) => (
                  <div key={event.id}>
-                     <EventCard title={event.title} content={event.content} time={event.startTime} attendees={event.attendees.length} />
-                     <div>{event.startTime}</div>
-                     hello
+                     <EventCard title={event.title} content={event.content} time={event.startTime} attendees={event.attendees} />
+                
                  </div>
              ))}
          </div>
+         <div>
+            <button onClick={setAttend}>set atteend</button>
+         </div>
+
+
 
     </div>);
 }
