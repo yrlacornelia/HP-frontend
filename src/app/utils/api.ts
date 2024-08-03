@@ -210,3 +210,22 @@ export const fetchAllEvents = async () => {
     const data = await response.json();
     return data;
 };
+
+export const fetchCurrentEvents = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/users/getevents', {
+            method: 'GET',
+            credentials: 'include', 
+        });
+      
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json(); 
+        return data;
+    } catch (error) {
+        console.error("Failed to fetch current user:", error);
+        throw error;
+    }
+};
