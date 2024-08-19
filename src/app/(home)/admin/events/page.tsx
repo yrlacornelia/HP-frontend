@@ -31,10 +31,11 @@ const Eventpage = () => {
     };
     return (<div className="relative">
         <AdminSidebar />
-        <div className="flex gap-10 flex justify-center items-center flex-col">
-            <form onSubmit={handleCreateEvent} className="w-full max-w-lg">
+        <div className="flex gap-10 flex justify-center items-center flex-col ">
+            <form onSubmit={handleCreateEvent} className="w-full max-w-lg bg-blue p-10 mt-20">
+                <h2 className="text-center mb-5">CREATE NEW EVENT</h2>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className="w-full md:w-1/2 px-3">
+                    <div className="w-full  px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                             Title
                         </label>
@@ -47,7 +48,7 @@ const Eventpage = () => {
                     </div>
                 </div>
                 <div className="flex flex-wrap -mx-3 mb-6">
-                    <div className="w-full md:w-1/2 px-3">
+                    <div className="w-full px-3">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                             Content
                         </label>
@@ -60,7 +61,7 @@ const Eventpage = () => {
                 </div>
 
                 <div className="flex flex-wrap -mx-3 mb-2">
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                             Time
                         </label>
@@ -70,8 +71,8 @@ const Eventpage = () => {
                              type="datetime-local" className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Doe" />
                     </div>
 
-                    <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <div className="w-full px-3 mb-6 md:mb-0">
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 House
                             </label>

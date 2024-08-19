@@ -16,12 +16,7 @@ type Message = {
         imageData: string;
     };
 };
-type RecivedMessage = {
-    id: number;
-    content: string;
-    createdAt: string;
 
-};
 const HouseChate = () => {
 
     const [user, setUser] = useState("")
@@ -52,6 +47,7 @@ const HouseChate = () => {
     useEffect(() => {
         const fetchAll = async () => {
             const users = await fetchAllEvents();
+            console.log(users)
             setEvents(users);
 
         };
@@ -111,7 +107,6 @@ const HouseChate = () => {
             setMessage('');
         }
     };
-console.log(userEvents)
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -134,7 +129,7 @@ console.log(userEvents)
 
         fetchMessages();
     }, []);
-
+console.log(events)
     return (<div className="flex justify-between">
         <ChatSidebar />
         <div className="flex gap-10 w-1/2 flex-col">
@@ -172,8 +167,15 @@ console.log(userEvents)
         <div>
             {events.map((event) => (
                 <div key={event.id}>
-                    <EventCard attending={attending(event.id)} id={event.id} title={event.title} content={event.content} time={event.startTime} attendees={event.attendees} />
-
+<EventCard
+    key={event.id}
+    attending={attending(event.id)}
+    id={event.id}
+    title={event.title}
+    content={event.content}
+    time={event.startTime}
+    attendees={event.attendees || []} 
+/>
                 </div>
             ))}
         </div>

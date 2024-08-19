@@ -113,6 +113,14 @@ export const fetchAllusers = async () => {
     const data = await response.json();
     return data;
 };
+export const fetchAlluserswithHouse = async () => {
+    const response = await fetch('http://localhost:8080/admin/alluserswithhouse', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    console.log(data)
+    return data;
+};
 
 export const deleteUser = async (csrfToken:any, userId:number) => {
     console.log(userId)
@@ -208,6 +216,7 @@ export const fetchAllEvents = async () => {
         credentials: 'include'
     });
     const data = await response.json();
+    console.log(data)
     return data;
 };
 

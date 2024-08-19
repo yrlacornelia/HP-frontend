@@ -60,6 +60,7 @@ const NewUserPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
+            
             <input type="hidden" name="_csrf" value={csrfToken} />
 
             <button className='m-auto mt-5 border bg-white text-black w-full py-3' type="submit">create person</button>
